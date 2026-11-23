@@ -108,7 +108,7 @@ class DataSet:
             LinearRegression: The trained regression model.
         """
         regressor = LinearRegression()
-        regressor.fit(self.independents, self.dependents)
+        regressor.fit(self.x_train, self.y_train)
         return regressor
 
     def multiple_linear_regressor(self):
@@ -119,7 +119,7 @@ class DataSet:
             LinearRegression: The trained regression model.
         """
         regressor = LinearRegression()
-        regressor.fit(self.independents, self.dependents)
+        regressor.fit(self.x_train, self.y_train)
         return regressor
 
     def polynomial_regressor(self, degree=4):
@@ -134,9 +134,9 @@ class DataSet:
             PolynomialFeatures object and the trained regression model.
         """
         poly_reg = PolynomialFeatures(degree=degree)
-        x_poly = poly_reg.fit_transform(self.independents)
+        x_poly = poly_reg.fit_transform(self.x_train)
         regressor = LinearRegression()
-        regressor.fit(x_poly, self.dependents)
+        regressor.fit(x_poly, self.y_train)
         return poly_reg, regressor
 
     def support_vector_regressor(self):
@@ -147,7 +147,7 @@ class DataSet:
             SVR: The trained regression model.
         """
         regressor = SVR(kernel="rbf")
-        regressor.fit(self.independents, self.dependents)
+        regressor.fit(self.x_train, self.y_train)
         return regressor
 
     def decision_tree_regressor(self):
@@ -158,7 +158,7 @@ class DataSet:
             DecisionTreeRegressor: The trained regression model.
         """
         regressor = DecisionTreeRegressor(random_state=self.random_state)
-        regressor.fit(self.independents, self.dependents)
+        regressor.fit(self.x_train, self.y_train)
         return regressor
 
     def random_forest_regressor(self, estimators=10):
@@ -174,7 +174,7 @@ class DataSet:
         regressor = RandomForestRegressor(
             n_estimators=estimators, random_state=self.random_state
         )
-        regressor.fit(self.independents, self.dependents)
+        regressor.fit(self.x_train, self.y_train)
         return regressor
 
     def classifier_logistic_regression(self, independent_vars, dependent_vars):
@@ -338,7 +338,6 @@ class DataSet:
             y_pred (array-like): The predicted labels.
         """
         self.classification_scores(self.y_test, y_pred)
-        self.classification_r2_score(self.y_test, y_pred)
         print("-" * 10)
 
     def run_classification_model_test(self, scalling=True):
@@ -378,6 +377,6 @@ class DataSet:
         y_pred = classifier.predict(x_test)
         self.print_results(y_pred)
         print("Logistic Regression Results")
-        classifier = self.classifier_k_nearest_neighboors(x_train, self.y_train)
+        classifier = self.classifier_logistic_regression(x_train, self.y_train)
         y_pred = classifier.predict(x_test)
         self.print_results(y_pred)
